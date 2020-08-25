@@ -25,7 +25,9 @@ func readBoard() (*State, error) {
 		for col, c := range line {
 			if unicode.IsDigit(c) {
 				i, _ := strconv.Atoi(string(c))
-				retv.Set(row, col, uint(i))
+				if err := retv.Set(row, col, uint(i)); err != nil {
+					return nil, fmt.Errorf("Invalid input board, cannot set (%d %d) to %d", row, col, i)
+				}
 			} else if c != '.' {
 				return nil, errors.New("Only digits and . is allowed for input")
 			}
